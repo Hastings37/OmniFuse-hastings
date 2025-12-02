@@ -1,0 +1,64 @@
+name: latent_AutoEncoder
+suffix: ~  # add suffix to saved images
+model: my_latent
+distortion: mixed
+gpu_ids: [ 0 ]
+
+degradation:
+  # for denoising
+  sigma: 25
+  noise_type: G # Gaussian noise: G
+
+  # for super-resolution
+  scale: 4
+
+datasets:
+  test1:
+    name: AutoEncoder
+    mode: XYLQGT
+    dataroot_X_GT: "datasets/val/Visible_gt/"
+    dataroot_X_LQ: "datasets/val/Visible/"
+    dataroot_Y_GT: "datasets/val/Infrared_gt/"
+    dataroot_Y_LQ: "datasets/val/Infrared/"
+
+    # 这里的test1 对应的是slight 后面还有 moderate average extreme 给出对应的test2 test3 test4；
+#  test2:
+#    name: AutoEncoder
+#    mode: XYLQGT
+#    dataroot_X_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_moderate/test/Visible_gt/"
+#    dataroot_X_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_moderate/test/Visible/"
+#    dataroot_Y_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_moderate/test/Infrared_gt/"
+#    dataroot_Y_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_moderate/test/Infrared/"
+#
+#  test3:
+#    name: AutoEncoder
+#    mode: XYLQGT
+#    dataroot_X_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_average/test/Visible_gt/"
+#    dataroot_X_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_average/test/Visible/"
+#    dataroot_Y_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_average/test/Infrared_gt/"
+#    dataroot_Y_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_average/test/Infrared/"
+#
+#  test4:
+#    name: AutoEncoder
+#    mode: XYLQGT
+#    dataroot_X_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_extreme/test/Visible_gt/"
+#    dataroot_X_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_extreme/test/Visible/"
+#    dataroot_Y_GT: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_extreme/test/Infrared_gt/"
+#    dataroot_Y_LQ: "DDL-12/IR_Low_contrast_full/IR_Low_contrast_extreme/test/Infrared/"
+
+
+
+#### network structures
+network_AE:
+  which_model: TransformerUNet
+  setting:
+    in_ch: 3
+    out_ch: 3
+    ch: 48
+    ch_mult: [1,2,4,4 ]
+    embed_dim: 16
+
+#### path
+path:
+  pretrain_model_AE: "./pretrained/44820_G.pth"
+

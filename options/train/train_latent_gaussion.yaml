@@ -1,0 +1,256 @@
+#### general settings
+name: latent_AutoEncoder
+use_tb_logger: true
+model: latent_to_gaussion
+distortion: mixed
+gpu_ids: [0]
+
+#### datasets
+datasets:
+  train:
+    name: Train_Dataset
+    mode: complex_degradation
+    phase: train
+
+    use_shuffle: true
+    n_workers: 0
+    batch_size: 1 # 远程使用12或者是更高的batch_size ；
+    transforms:
+      use_hflip: true
+      use_vflip: true
+      use_rot: true
+      random_crop:
+        height: 64
+        width: 64
+      center_crop: ~
+      resieze_16: ~ # 对图像进行16的倍数的调整；
+
+    # IR (Infrared Image) Low Contrast Paths - Train
+    ir_low_contrast_slight_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_slight/train"
+#    ir_low_contrast_moderate_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_moderate/train"
+#    ir_low_contrast_average_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_average/train"
+#    ir_low_contrast_extreme_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_extreme/train"
+
+    # # IR Noise Paths - Train
+    # ir_noise_slight_path: "DDL-12/IR_Noise/IR_Noise_slight/train"
+    # ir_noise_moderate_path: "DDL-12/IR_Noise/IR_Noise_moderate/train"
+    # ir_noise_average_path: "DDL-12/IR_Noise/IR_Noise_average/train"
+    # ir_noise_extreme_path: "DDL-12/IR_Noise/IR_Noise_extreme/train"
+
+    # # IR Stripe Noise Paths - Train
+    # ir_stripe_noise_slight_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_slight/train"
+    # ir_stripe_noise_moderate_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_moderate/train"
+    # ir_stripe_noise_average_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_average/train"
+    # ir_stripe_noise_extreme_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_extreme/train"
+
+    # # VI Blur Paths - Train
+    # vi_blur_slight_path: "DDL-12/VI_Blur/VI_Blur_slight/train"
+    # vi_blur_moderate_path: "DDL-12/VI_Blur/VI_Blur_moderate/train"
+    # vi_blur_average_path: "DDL-12/VI_Blur/VI_Blur_average/train"
+    # vi_blur_extreme_path: "DDL-12/VI_Blur/VI_Blur_extreme/train"
+
+    # # VI Haze Paths - Train
+    # vi_haze_slight_path: "DDL-12/VI_Haze/VI_Haze_slight/train"
+    # vi_haze_moderate_path: "DDL-12/VI_Haze/VI_Haze_moderate/train"
+    # vi_haze_average_path: "DDL-12/VI_Haze/VI_Haze_average/train"
+    # vi_haze_extreme_path: "DDL-12/VI_Haze/VI_Haze_extreme/train"
+
+    # # VI Haze and low Paths - Train
+    # vi_haze_low_path: "DDL-12/VI_Haze_Low/train"
+
+    # # VI Low Light Paths - Train
+    # vi_low_light_slight_path: "DDL-12/VI_Low_light/VI_Low_light_slight/train"
+    # vi_low_light_moderate_path: "DDL-12/VI_Low_light/VI_Low_light_moderate/train"
+    # vi_low_light_average_path: "DDL-12/VI_Low_light/VI_Low_light_average/train"
+    # vi_low_light_extreme_path: "DDL-12/VI_Low_light/VI_Low_light_extreme/train"
+
+
+    # # VI (Visible Image) Noise Paths - Train
+    # vi_noise_slight_path: "DDL-12/VI_Noise/VI_Noise_slight/train"
+    # vi_noise_moderate_path: "DDL-12/VI_Noise/VI_Noise_moderate/train"
+    # vi_noise_average_path: "DDL-12/VI_Noise/VI_Noise_average/train"
+    # vi_noise_extreme_path: "DDL-12/VI_Noise/VI_Noise_extreme/train"
+
+    # # VI Noise Low Paths - Train
+    # vi_noise_low_path: "DDL-12/VI_Noise_Low/train"
+
+    # # VI Over Exposure Paths - Train
+    # over_exposure_slight_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_slight/train"
+    # over_exposure_moderate_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_moderate/train"
+    # over_exposure_average_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_average/train"
+    # over_exposure_extreme_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_extreme/train"
+
+    # # VI Rain Paths - Train
+    # vi_rain_slight_path: "DDL-12/VI_Rain/VI_Rain_slight/train"
+    # vi_rain_moderate_path: "DDL-12/VI_Rain/VI_Rain_moderate/train"
+    # vi_rain_average_path: "DDL-12/VI_Rain/VI_Rain_average/train"
+    # vi_rain_extreme_path: "DDL-12/VI_Rain/VI_Rain_extreme/train"
+
+    # # VI Rain Haze Paths - Train
+    # vi_rain_haze_path: "DDL-12/VI_Rain_Haze/train"
+
+
+    # # Doubel 退化的内容；
+    # # VI low light and IR Stripe Noise Paths - Train
+    # llsn_path: "DDL-12/llsn/train"
+    # # VI over exposure and IR low contrast Paths - Train
+    # oelc_path: "DDL-12/oelc/train"
+    # # VI rain haze and IR random noise Paths - Train
+    # rhrn_path: "DDL-12/rhrn/train"
+
+
+
+
+  val:
+    name: Val_Dataset
+    mode: complex_degradation
+    phase: val
+
+    transforms:
+      use_hflip: ~
+      use_vflip: ~
+      use_rot: ~
+      random_crop: ~
+      center_crop: ~
+      resieze_16: ~ # 对图像进行16的倍数的调整；
+    n_workers: 0
+    batch_size: 1
+
+    # IR (Infrared Image) Low Contrast Paths - Test  # 使用的是固定的80个数据来作为验证的操作；
+    ir_low_contrast_slight_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_slight/val"
+#    ir_low_contrast_moderate_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_moderate/val"
+#    ir_low_contrast_average_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_average/val"
+#    ir_low_contrast_extreme_path: "DDL-12/IR_Low_contrast/IR_Low_contrast_extreme/val"
+
+    #     # IR Noise Paths - Test
+    #     ir_noise_slight_path: "DDL-12/IR_Noise/IR_Noise_slight/val"
+    #     ir_noise_moderate_path: "DDL-12/IR_Noise/IR_Noise_moderate/val"
+    #     ir_noise_average_path: "DDL-12/IR_Noise/IR_Noise_average/val"
+    #     ir_noise_extreme_path: "DDL-12/IR_Noise/IR_Noise_extreme/val"
+    #
+    #     # IR Stripe Noise Paths - Test
+    #     ir_stripe_noise_slight_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_slight/val"
+    #     ir_stripe_noise_moderate_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_moderate/val"
+    #     ir_stripe_noise_average_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_average/val"
+    #     ir_stripe_noise_extreme_path: "DDL-12/IR_Stripe_noise/IR_Stripe_noise_extreme/val"
+
+    #     # VI Blur Paths - Test
+    #     vi_blur_slight_path: "DDL-12/VI_Blur/VI_Blur_slight/val"
+    #     vi_blur_moderate_path: "DDL-12/VI_Blur/VI_Blur_moderate/val"
+    #     vi_blur_average_path: "DDL-12/VI_Blur/VI_Blur_average/val"
+    #     vi_blur_extreme_path: "DDL-12/VI_Blur/VI_Blur_extreme/val"
+    #
+    #     # VI Haze Paths - Test
+    #     vi_haze_slight_path: "DDL-12/VI_Haze/VI_Haze_slight/val"
+    #     vi_haze_moderate_path: "DDL-12/VI_Haze/VI_Haze_moderate/val"
+    #     vi_haze_average_path: "DDL-12/VI_Haze/VI_Haze_average/val"
+    #     vi_haze_extreme_path: "DDL-12/VI_Haze/VI_Haze_extreme/val"
+
+    # # VI Haze Low Paths - Test
+    # vi_haze_low_path: "DDL-12/VI_Haze_Low/val"
+
+    # # VI Low Light Paths - Test
+    # vi_low_light_slight_path: "DDL-12/VI_Low_light/VI_Low_light_slight/val"
+    # vi_low_light_moderate_path: "DDL-12/VI_Low_light/VI_Low_light_moderate/val"
+    # vi_low_light_average_path: "DDL-12/VI_Low_light/VI_Low_light_average/val"
+    # vi_low_light_extreme_path: "DDL-12/VI_Low_light/VI_Low_light_extreme/val"
+
+    # # VI (Visible Image) Noise Paths - Test
+    # vi_noise_slight_path: "DDL-12/VI_Noise/VI_Noise_slight/val"
+    # vi_noise_moderate_path: "DDL-12/VI_Noise/VI_Noise_moderate/val"
+    # vi_noise_average_path: "DDL-12/VI_Noise/VI_Noise_average/val"
+    # vi_noise_extreme_path: "DDL-12/VI_Noise/VI_Noise_extreme/val"
+
+    # # VI Noise Low Paths - Test
+    # vi_noise_low_path: "DDL-12/VI_Noise_Low/val"
+
+    # # VI Over Exposure Paths - Test
+    # over_exposure_slight_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_slight/val"
+    # over_exposure_moderate_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_moderate/val"
+    # over_exposure_average_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_average/val"
+    # over_exposure_extreme_path: "DDL-12/VI_Over_exposure/VI_Over_exposure_extreme/val"
+
+    # # VI Rain Paths - Test
+    # vi_rain_slight_path: "DDL-12/VI_Rain/VI_Rain_slight/val"
+    # vi_rain_moderate_path: "DDL-12/VI_Rain/VI_Rain_moderate/val"
+    # vi_rain_average_path: "DDL-12/VI_Rain/VI_Rain_average/val"
+    # vi_rain_extreme_path: "DDL-12/VI_Rain/VI_Rain_extreme/val"
+
+    # # VI Rain Haze Paths - Test
+    # vi_rain_haze_path: "DDL-12/VI_Rain_Haze/val"
+
+    # # Double 退化 - Test
+    # llsn_path: "DDL-12/llsn/val"
+    # oelc_path: "DDL-12/oelc/val"
+    # rhrn_path: "DDL-12/rhrn/val"
+
+
+#### network structures
+network_AE:
+  which_model: TransformerUNet
+  setting:
+    in_ch: 3
+    out_ch: 3
+    ch: 48
+    ch_mult: [1,2,4,4]
+    embed_dim: 16
+### path
+path:
+  pretrain_model_G: ~ # 这里需要提前定义好指定的位置了看样子；
+  strict_load: true
+  resume_state: ~
+
+#### training settings: learning rate scheme, loss
+train:
+  # 1. 优化器：回归经典，稳健第一
+  optimizer: Adam
+
+  # 2. 学习率：1e-4 是 ResNet/CNN 类结构的黄金标准
+  lr_G: !!float 1e-4
+  # 3. 学习率策略：余弦退火 (Cosine Annealing)
+  # 这能让模型在后期微调时更精准，降到非常低的学习率
+  lr_scheme: TrueCosineAnnealingLR
+
+  # Adam 的标准参数
+  beta1: 0.9
+  beta2: 0.999
+
+  # 4. 总迭代次数：10万次 (约 160 个 Epochs)
+  # 对于 4万张图的数据集，这个训练时长既能保证拟合，又不会过拟合
+  niter: 100000
+
+  # 5. Warmup：给 2 个 Epoch 的热身时间 (625 * 2 ≈ 1250)
+  # 有助于 Adam 的动量统计稳定
+  warmup_iter: 1250
+
+  # 6. 如果你需要阶梯式下降 (MultiStepLR)，可以用这个参数 (Cosine下通常忽略)
+  # lr_steps: [50000, 80000]
+
+  # 7. 学习率下限
+  eta_min: !!float 1e-7
+
+  # =========================================================
+  # 8. Loss 权重 (需要在代码中解析)
+  # =========================================================
+  # 这一部分非常关键，请确保代码中有对应逻辑
+  pixel_opt:
+    type: MSELoss
+    loss_weight: 1.0  # 保证 Latent 内容不丢失 (语义一致性)
+
+  kl_opt:
+    type: KLDivergenceLoss
+    loss_weight: 0.001 # 稍微加大一点权重，强迫分布向 N(0,1) 对齐
+    # 理由：因为是两阶段训练，大模型已经冻结，我们可以容忍 Latent 发生微小的变形
+    # 以换取完美的正态分布，这对后续扩散模型非常有利。
+  # criterion
+  is_weighted: False
+  loss_type: l1
+  weight: 1.0
+
+  manual_seed: 0
+  val_freq: !!float 1000
+
+#### logger
+logger:
+  print_freq: 10
+  save_checkpoint_freq: !!float 1000

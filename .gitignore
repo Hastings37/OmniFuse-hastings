@@ -1,0 +1,13 @@
+DDL-12/
+experiments/
+log/
+pretrained/
+results/
+segment-anything/
+OmniFusion.pdf
+zia18124
+/datasets/
+/models/groundingdino/
+/models/groundingdino_sam_checkpoints/
+/models/bert-base-uncased/
+
